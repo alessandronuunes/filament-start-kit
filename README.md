@@ -39,8 +39,8 @@ Before you begin, ensure you have the following installed on your system:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/your-repository-name.git
-    cd your-repository-name
+    git clone https://github.com/alessandronuunes/filament-start-kit.git
+    cd filament-start-kit
     ```
 
 2.  **Install PHP dependencies:**

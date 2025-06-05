@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 if (! function_exists('local_now')) {
     function local_now(): Carbon
     {
-        return now(config('app.local_timezone'));
+        return now(config('app.timezone'));
     }
 }
 
@@ -31,7 +31,7 @@ if (! function_exists('local_date')) {
         }
 
         return $date
-            ->timezone(config('app.local_timezone'))
+            ->timezone(config('app.timezone'))
             ->when(
                 fn (Carbon $carbon) => $short && $carbon->isCurrentYear(),
                 fn (Carbon $carbon) => $carbon->translatedFormat(preg_replace('/[\/\-]?\s?[Yy][\/\-]?/', '', $format)),
@@ -52,7 +52,7 @@ if (! function_exists('local_time')) {
         }
 
         return $time
-            ->timezone(config('app.local_timezone'))
+            ->timezone(config('app.timezone'))
             ->translatedFormat($format);
     }
 }
@@ -69,7 +69,7 @@ if (! function_exists('local_datetime')) {
         }
 
         return $datetime
-            ->timezone(config('app.local_timezone'))
+            ->timezone(config('app.timezone'))
             ->when(
                 fn (Carbon $carbon) => $short && $carbon->isCurrentYear(),
                 fn (Carbon $carbon) => $carbon->translatedFormat(preg_replace('/[\/\-]?\s?[Yy][\/\-]?/', '', $format)),

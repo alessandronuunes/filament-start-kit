@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Filament\Actions;
 
-use App\Helpers\Cashier\Stripe;
 use Closure;
-use Filament\Actions\Action;
-use Filament\Notifications\Notification;
-use Filament\Support\Enums\MaxWidth;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Log;
+use App\Models\Team;
 use Illuminate\View\View;
+use Filament\Actions\Action;
+use App\Helpers\Cashier\Stripe;
+use function App\Support\tenant;
+use Illuminate\Support\Facades\Log;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Notifications\Notification;
+use Illuminate\Contracts\Support\Htmlable;
 
 class SubscribeAction extends Action
 {
@@ -25,12 +27,13 @@ class SubscribeAction extends Action
 
     protected function setUp(): void
     {
+        $team = tenant(Team::class);
+
         $this->name('subscribe');
 
         $this->modalWidth(MaxWidth::FourExtraLarge);
 
-        $this->modalHeading(''); // Removemos o título padrão para usar nosso próprio no template
-
+        
         $this->modalContent(function () {
             // Avalia as closures antes de passar para a view
             $selectedPlan = $this->getSelectedPlan();
@@ -96,12 +99,13 @@ class SubscribeAction extends Action
                     }
                 }),
         ]);
-
-        $this->closeModalByClickingAway(false);
-        $this->closeModalByEscaping(false);
-        $this->modalCloseButton(false);
+        //
+        $this->closeModalByClickingAway($team->onGenericTrial());
+        $this->closeModalByEscaping($team->onGenericTrial());
+        $this->modalCloseButton(true);
         $this->modalCancelAction(false);
         $this->modalSubmitAction(false);
+        $this->modalHeading(''); // Removemos o título padrão para usar nosso próprio no template
 
         $this->extraModalWindowAttributes([
             'class' => 'subscription-modal-wrapper',
